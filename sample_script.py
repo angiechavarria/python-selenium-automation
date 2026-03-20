@@ -27,7 +27,6 @@ sleep(4)
 driver.find_element(By.NAME, 'btnK').click()
 
 # verify search results
-assert 'table'.lower() in driver.current_url.lower(), f"Expected query not in {driver.current_url.lower()}"
+assert 'table' in driver.current_url.lower(), f"Expected query not in {driver.current_url.lower()}"
 print('Test Passed')
 
-driver.quit()
