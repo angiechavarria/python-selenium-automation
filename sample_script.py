@@ -1,32 +1,34 @@
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep
 
-# get the path to the ChromeDriver executable
+# set up Chrome driver
 driver_path = ChromeDriverManager().install()
-
-# create a new Chrome browser instance
 service = Service(driver_path)
 driver = webdriver.Chrome(service=service)
 driver.maximize_window()
 
-# open the url
-driver.get('https://www.google.com/')
+# open Google
+driver.get("https://www.google.com/")
 
-# populate search field
-search = driver.find_element(By.NAME, 'q')
+# find search box and type chair
+search = driver.find_element(By.NAME, "q")
 search.clear()
-search.send_keys('table')
+search.send_keys("chair")
+search.send_keys(Keys.RETURN)
 
-# wait for 4 sec
-sleep(4)
+# wait a few seconds so results page can load
+sleep(5)
 
-# click search button
-driver.find_element(By.NAME, 'btnK').click()
+# verify the search happened
+assert "chair" in driver.current_url.lower() or "chair" in driver.title.lower(), \
+    f"Expected 'chair' in URL or title, got URL: {driver.current_url}, title: {driver.title}"
 
-# verify search results
-assert 'table' in driver.current_url.lower(), f"Expected query not in {driver.current_url.lower()}"
-print('Test Passed')
+print("Test Passed")
 
+# close browser
+driver.quit()
